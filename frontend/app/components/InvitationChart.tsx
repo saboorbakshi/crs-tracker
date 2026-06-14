@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   BarChart,
@@ -8,10 +8,10 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
-} from "recharts"
-import { SHORT_MONTHS, FULL_MONTHS, CHART_ASPECT_RATIO } from "../constants"
-import { InvitationDataPoint } from "../types"
-import ChartTooltipComponent from "./ChartTooltip"
+} from 'recharts'
+import { SHORT_MONTHS, FULL_MONTHS, CHART_ASPECT_RATIO } from '../constants'
+import { InvitationDataPoint } from '../types'
+import ChartTooltipComponent from './ChartTooltip'
 
 interface InvitationChartProps {
   data: InvitationDataPoint[]
@@ -35,8 +35,15 @@ function ChartTooltip({
     <ChartTooltipComponent
       content={
         <div className="flex flex-col text-foreground2">
-          <span><span className="text-foreground">{point.invitations.toLocaleString()}</span> invitations</span>
-          <span>{fullMonth} {year}</span>
+          <span>
+            <span className="text-foreground">
+              {point.invitations.toLocaleString()}
+            </span>{' '}
+            invitations
+          </span>
+          <span>
+            {fullMonth} {year}
+          </span>
         </div>
       }
     />
@@ -55,7 +62,7 @@ export default function InvitationChart({ data, year }: InvitationChartProps) {
           <XAxis
             dataKey="month"
             interval={1}
-            tick={{ fontSize: 12, fill: "var(--foreground2)" }}
+            tick={{ fontSize: 12, fill: 'var(--foreground2)' }}
             tickLine={false}
             axisLine={false}
             tickFormatter={(val) => SHORT_MONTHS[val]}
@@ -63,15 +70,19 @@ export default function InvitationChart({ data, year }: InvitationChartProps) {
           <YAxis
             orientation="right"
             width={30}
-            tick={{ fontSize: 12, fill: "var(--foreground2)" }}
+            tick={{ fontSize: 12, fill: 'var(--foreground2)' }}
             tickLine={false}
             axisLine={false}
             tickFormatter={(v) => (v >= 1000 ? `${Math.round(v / 1000)}k` : v)}
           />
-          <CartesianGrid vertical={false} stroke="var(--border2)" strokeDasharray="1 2" />
+          <CartesianGrid
+            vertical={false}
+            stroke="var(--border2)"
+            strokeDasharray="1 2"
+          />
           <Tooltip
             isAnimationActive={false}
-            cursor={{ fill: "var(--background2)" }}
+            cursor={{ fill: 'var(--background2)' }}
             content={<ChartTooltip year={year} />}
           />
           <Bar

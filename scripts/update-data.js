@@ -1,26 +1,30 @@
-import fs from "fs"
-import { z } from "zod"
-import path from "path"
-import { fileURLToPath } from "url"
+import fs from 'fs'
+import { z } from 'zod'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const FRONTEND_DATA_FILE = path.resolve(__dirname, "../frontend/data.json")
+const FRONTEND_DATA_FILE = path.resolve(__dirname, '../frontend/data.json')
 
 const RAW_DATA_INPUT = process.argv[2]
 
 if (!RAW_DATA_INPUT) {
-  console.error("Error: No input file provided.")
-  console.error("Usage: node update-data.js <path-to-raw-json>")
+  console.error('Error: No input file provided.')
+  console.error('Usage: node update-data.js <path-to-raw-json>')
   process.exit(1)
 }
 
-const commaInt = z.string()
-  .regex(/^[\d,]+$/, "Must contain only digits and commas") 
+const commaInt = z
+  .string()
+  .regex(/^[\d,]+$/, 'Must contain only digits and commas')
   .transform((val, ctx) => {
-    const cleaned = val.replace(/,/g, "")
+    const cleaned = val.replace(/,/g, '')
     const parsed = Number(cleaned)
     if (!Number.isSafeInteger(parsed)) {
-      ctx.addIssue({ code: "custom", message: `"${val}" is not a safe integer` })
+      ctx.addIssue({
+        code: 'custom',
+        message: `"${val}" is not a safe integer`,
+      })
       return z.NEVER
     }
     return parsed
@@ -64,33 +68,35 @@ const RoundSchema = z.object({
 
 const ApiResponseSchema = z.object({
   classes: z.string(),
-  rounds: z.array(RoundSchema).min(1, "API must contain at least one round"),
+  rounds: z.array(RoundSchema).min(1, 'API must contain at least one round'),
 })
 
 async function main() {
   try {
     const absolutePath = path.resolve(process.cwd(), RAW_DATA_INPUT)
-    
+
     if (!fs.existsSync(absolutePath)) {
       throw new Error(`Input file not found: ${absolutePath}`)
     }
 
     console.log(`Reading: ${absolutePath}`)
-    const fileContent = fs.readFileSync(absolutePath, "utf8")
+    const fileContent = fs.readFileSync(absolutePath, 'utf8')
     const apiJson = JSON.parse(fileContent)
 
-    console.log("Validating data structure...")
+    console.log('Validating data structure...')
     const parseResult = ApiResponseSchema.safeParse(apiJson)
 
     if (!parseResult.success) {
       parseResult.error.issues.forEach((issue) => {
-        console.error(`Validation Issue - Path: ${issue.path.join(".")} | ${issue.message}`)
+        console.error(
+          `Validation Issue - Path: ${issue.path.join('.')} | ${issue.message}`
+        )
       })
-      throw new Error("Schema validation failed")
+      throw new Error('Schema validation failed')
     }
 
     // Path is guaranteed to exist
-    const oldData = JSON.parse(fs.readFileSync(FRONTEND_DATA_FILE, "utf8"))
+    const oldData = JSON.parse(fs.readFileSync(FRONTEND_DATA_FILE, 'utf8'))
     const oldDrawNumber = oldData.payload.rounds[0].drawNumber
     const newDrawNumber = parseResult.data.rounds[0].drawNumber
 
@@ -106,11 +112,10 @@ async function main() {
       fs.writeFileSync(FRONTEND_DATA_FILE, JSON.stringify(updatedData, null, 2))
       console.log(`Success: Updated ${FRONTEND_DATA_FILE}`)
     } else {
-      console.log("No new draw detected. Skipping update.")
+      console.log('No new draw detected. Skipping update.')
     }
-    
   } catch (error) {
-    console.error("Fatal Error:")
+    console.error('Fatal Error:')
     console.error(error.message)
     process.exit(1)
   }

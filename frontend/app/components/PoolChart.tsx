@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   BarChart,
@@ -8,10 +8,10 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
-} from "recharts"
-import { PoolDataPoint } from "../types"
-import ChartTooltipComponent from "./ChartTooltip"
-import { CHART_ASPECT_RATIO, POOL_VIEWS } from "../constants"
+} from 'recharts'
+import { PoolDataPoint } from '../types'
+import ChartTooltipComponent from './ChartTooltip'
+import { CHART_ASPECT_RATIO, POOL_VIEWS } from '../constants'
 
 interface PoolChartProps {
   data: PoolDataPoint[]
@@ -31,8 +31,15 @@ function ChartTooltip({
     <ChartTooltipComponent
       content={
         <div className="flex flex-col text-foreground2">
-          <span><span className="text-foreground">{point.count.toLocaleString()}</span> candidates</span>
-          <span><span className="text-foreground">{point.range}</span> CRS score</span>
+          <span>
+            <span className="text-foreground">
+              {point.count.toLocaleString()}
+            </span>{' '}
+            candidates
+          </span>
+          <span>
+            <span className="text-foreground">{point.range}</span> CRS score
+          </span>
         </div>
       }
     />
@@ -50,24 +57,28 @@ export default function PoolChart({ data }: PoolChartProps) {
           margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
         >
           <XAxis
-            interval={"equidistantPreserveEnd"}
+            interval={'equidistantPreserveEnd'}
             dataKey="range"
-            tick={{ fontSize: 12, fill: "var(--foreground2)" }}
+            tick={{ fontSize: 12, fill: 'var(--foreground2)' }}
             tickLine={false}
             axisLine={false}
           />
           <YAxis
             orientation="right"
             width={30}
-            tick={{ fontSize: 12, fill: "var(--foreground2)" }}
+            tick={{ fontSize: 12, fill: 'var(--foreground2)' }}
             tickLine={false}
             axisLine={false}
             tickFormatter={(v) => (v >= 1000 ? `${Math.round(v / 1000)}k` : v)}
           />
-          <CartesianGrid vertical={false} stroke="var(--border2)" strokeDasharray="1 2" />
+          <CartesianGrid
+            vertical={false}
+            stroke="var(--border2)"
+            strokeDasharray="1 2"
+          />
           <Tooltip
             isAnimationActive={false}
-            cursor={{ fill: "var(--background2)" }}
+            cursor={{ fill: 'var(--background2)' }}
             content={<ChartTooltip />}
           />
           <Bar

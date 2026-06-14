@@ -1,5 +1,12 @@
-import { Round, DrawDataPoint, InvitationDataPoint, PoolDataPoint, ApiResponse, RawRound } from "./types"
-import { POOL_RANGES, POOL_VIEWS } from "./constants"
+import {
+  Round,
+  DrawDataPoint,
+  InvitationDataPoint,
+  PoolDataPoint,
+  ApiResponse,
+  RawRound,
+} from './types'
+import { POOL_RANGES, POOL_VIEWS } from './constants'
 
 ///////////////////////////////////////////////////////////////////////////
 // GENERAL
@@ -7,7 +14,7 @@ import { POOL_RANGES, POOL_VIEWS } from "./constants"
 
 export function extractRounds(data: ApiResponse): Round[] {
   return data.payload.rounds
-    .filter((r) => r.drawDate >= new Date("2020-01-01"))
+    .filter((r) => r.drawDate >= new Date('2020-01-01'))
     .map((r) => {
       const pool: Record<string, number> = Object.fromEntries(
         POOL_RANGES.map(({ key, range }) => [
@@ -22,8 +29,8 @@ export function extractRounds(data: ApiResponse): Round[] {
         invitations: r.drawSize,
         score: r.drawCRS,
         category: r.drawName
-          .replace(/Version /gi, "V")
-          .replace(/ occupations/gi, ""),
+          .replace(/Version /gi, 'V')
+          .replace(/ occupations/gi, ''),
         distributionDateFull: r.drawDistributionAsOn,
         pool,
         totalCandidates: r.dd18,
@@ -35,7 +42,9 @@ export function extractRounds(data: ApiResponse): Round[] {
 // DRAW CHART
 ///////////////////////////////////////////////////////////////////////////
 
-export function formatDrawData(rounds: Round[]): Record<string, DrawDataPoint[]> {
+export function formatDrawData(
+  rounds: Round[]
+): Record<string, DrawDataPoint[]> {
   const groups: Record<string, Round[]> = {}
   for (const r of rounds) {
     if (!groups[r.category]) groups[r.category] = []
@@ -47,28 +56,29 @@ export function formatDrawData(rounds: Round[]): Record<string, DrawDataPoint[]>
     a.localeCompare(b)
   )
   for (const [category, categoryRounds] of sortedEntries) {
-    formattedGroups[category] = [...categoryRounds]
-      .reverse()
-      .map((r, i) => ({
-        index: i + 1,
-        date: r.drawDate,
-        dateFull: r.drawDateFull,
-        score: r.score,
-        invitations: r.invitations,
-        category: r.category,
-      }))
+    formattedGroups[category] = [...categoryRounds].reverse().map((r, i) => ({
+      index: i + 1,
+      date: r.drawDate,
+      dateFull: r.drawDateFull,
+      score: r.score,
+      invitations: r.invitations,
+      category: r.category,
+    }))
   }
 
   return formattedGroups
 }
 
-export function filterByTime(data: DrawDataPoint[], period: string): DrawDataPoint[] {
+export function filterByTime(
+  data: DrawDataPoint[],
+  period: string
+): DrawDataPoint[] {
   let filtered
-  if (period === "ALL") {
+  if (period === 'ALL') {
     filtered = data
-  } else if (period === "1Y" || period === "2Y") {
+  } else if (period === '1Y' || period === '2Y') {
     const cutoff = new Date()
-    const years = period === "1Y" ? 1 : 2
+    const years = period === '1Y' ? 1 : 2
     cutoff.setFullYear(cutoff.getFullYear() - years)
     filtered = data.filter((d) => d.date >= cutoff)
   } else {
@@ -105,13 +115,16 @@ export function calculateDomain(data: DrawDataPoint[]) {
 // INVITATION CHART
 ///////////////////////////////////////////////////////////////////////////
 
-export function formatInvitationData(rounds: Round[], years: number[]): InvitationDataPoint[] {
+export function formatInvitationData(
+  rounds: Round[],
+  years: number[]
+): InvitationDataPoint[] {
   const formattedData: InvitationDataPoint[] = []
 
   for (const year of years) {
     const monthlyTotals: Record<number, number> = {}
     for (let i = 0; i < 12; i++) {
-        monthlyTotals[i] = 0
+      monthlyTotals[i] = 0
     }
 
     for (const r of rounds) {
@@ -141,7 +154,10 @@ export function formatInvitationData(rounds: Round[], years: number[]): Invitati
 // POOL CHART
 ///////////////////////////////////////////////////////////////////////////
 
-export function getPoolDistribution(round: Round, view: keyof typeof POOL_VIEWS): PoolDataPoint[] {
+export function getPoolDistribution(
+  round: Round,
+  view: keyof typeof POOL_VIEWS
+): PoolDataPoint[] {
   const keys = POOL_VIEWS[view]
 
   return keys.map((key) => {

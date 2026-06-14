@@ -2,7 +2,7 @@ name: Update API Data
 
 on:
   schedule:
-    - cron: "0 */12 * * *" # twice per day
+    - cron: '0 */12 * * *' # twice per day
   workflow_dispatch: # manual trigger
 
 permissions:

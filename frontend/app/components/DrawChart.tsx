@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { useEffect, useRef, useMemo } from "react"
+import { useEffect, useRef, useMemo } from 'react'
 import {
   LineChart,
   Line,
@@ -8,11 +8,11 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
-} from "recharts"
-import { DrawDataPoint } from "../types"
-import ChartTooltipComponent from "./ChartTooltip"
-import { calculateDomain } from "../utils"
-import { CHART_ASPECT_RATIO } from "../constants"
+} from 'recharts'
+import { DrawDataPoint } from '../types'
+import ChartTooltipComponent from './ChartTooltip'
+import { calculateDomain } from '../utils'
+import { CHART_ASPECT_RATIO } from '../constants'
 
 interface DrawChartProps {
   data: DrawDataPoint[]
@@ -22,17 +22,18 @@ interface DrawChartProps {
 function ChartTooltip({
   active,
   payload,
-  onActiveChange = () => { },
-  fallback
+  onActiveChange = () => {},
+  fallback,
 }: {
   active?: boolean
   payload?: any[]
   onActiveChange?: (point: DrawDataPoint) => void
   fallback: DrawDataPoint
 }) {
-  const point = active && payload && payload.length > 0
-    ? (payload[0].payload as DrawDataPoint)
-    : null
+  const point =
+    active && payload && payload.length > 0
+      ? (payload[0].payload as DrawDataPoint)
+      : null
 
   const prevRef = useRef<DrawDataPoint | null>(null)
 
@@ -50,8 +51,15 @@ function ChartTooltip({
     <ChartTooltipComponent
       content={
         <div className="flex flex-col text-foreground2">
-          <span><span className="text-foreground">{point.score}</span> CRS score</span>
-          <span><span className="text-foreground">{point.invitations.toLocaleString()}</span> invitations</span>
+          <span>
+            <span className="text-foreground">{point.score}</span> CRS score
+          </span>
+          <span>
+            <span className="text-foreground">
+              {point.invitations.toLocaleString()}
+            </span>{' '}
+            invitations
+          </span>
           <span>{point.dateFull}</span>
         </div>
       }
@@ -59,7 +67,10 @@ function ChartTooltip({
   )
 }
 
-export default function DrawChart({ data, onActiveChange = () => { } }: DrawChartProps) {
+export default function DrawChart({
+  data,
+  onActiveChange = () => {},
+}: DrawChartProps) {
   const fallback = data[data.length - 1]
   const domain = useMemo(() => calculateDomain(data), [data])
 
@@ -77,15 +88,21 @@ export default function DrawChart({ data, onActiveChange = () => { } }: DrawChar
           width={32}
           domain={domain}
           allowDecimals={false}
-          tick={{ fontSize: 12, fill: "var(--foreground2)" }}
+          tick={{ fontSize: 12, fill: 'var(--foreground2)' }}
           tickLine={false}
           axisLine={false}
         />
-        <CartesianGrid vertical={false} stroke="var(--border2)" strokeDasharray="1 2" />
+        <CartesianGrid
+          vertical={false}
+          stroke="var(--border2)"
+          strokeDasharray="1 2"
+        />
         <Tooltip
           isAnimationActive={false}
-          cursor={{ stroke: "var(--border2)", strokeDasharray: "1 2" }}
-          content={<ChartTooltip onActiveChange={onActiveChange} fallback={fallback} />}
+          cursor={{ stroke: 'var(--border2)', strokeDasharray: '1 2' }}
+          content={
+            <ChartTooltip onActiveChange={onActiveChange} fallback={fallback} />
+          }
         />
         <Line
           type="monotone"
@@ -93,7 +110,7 @@ export default function DrawChart({ data, onActiveChange = () => { } }: DrawChar
           stroke="var(--primary)"
           strokeWidth={2}
           dot={false}
-          activeDot={{ r: 5, strokeWidth: 2, fill: "var(--primary)" }}
+          activeDot={{ r: 5, strokeWidth: 2, fill: 'var(--primary)' }}
           animationDuration={200}
           animationEasing="ease-out"
         />

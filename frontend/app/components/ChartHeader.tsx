@@ -4,9 +4,13 @@ interface ChartHeaderProps {
   subtitle?: string
 }
 
-export default function ChartHeader({ title, value, subtitle }: ChartHeaderProps) {
+export default function ChartHeader({
+  title,
+  value,
+  subtitle,
+}: ChartHeaderProps) {
   const displayValue =
-    typeof value === "number" ? value.toLocaleString() : value
+    typeof value === 'number' ? value.toLocaleString() : value
 
   return (
     <div className="mb-4">

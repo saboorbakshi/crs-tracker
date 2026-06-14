@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from 'zod'
 
 export const RawRoundSchema = z.object({
   drawNumber: z.string(),
@@ -32,7 +32,7 @@ export const RawRoundSchema = z.object({
   dd16: z.number(),
   dd17: z.number(),
   dd18: z.number(),
-});
+})
 
 export const ApiResponseSchema = z.object({
   updatedAt: z.string(),
@@ -40,7 +40,7 @@ export const ApiResponseSchema = z.object({
     classes: z.string(),
     rounds: z.array(RawRoundSchema).min(1),
   }),
-});
+})
 
 export type ApiResponse = z.infer<typeof ApiResponseSchema>
 
