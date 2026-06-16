@@ -8,7 +8,8 @@
   --border: #ededed;
   --border2: #dddddd;
   --primary: #d52b1e;
-  --weight-normal: 320;
+  --error: #fc0000;
+  --weight-normal: 300;
 }
 
 @theme inline {

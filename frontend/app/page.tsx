@@ -97,7 +97,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center font-sans">
       <main className="flex min-h-screen w-full max-w-xl flex-col py-8 sm:py-14 px-5 gap-14 sm:gap-16">
-        <div>
+        <section className="-mb-7 sm:-mb-8">
           <p className="text-4xl sm:text-5xl font-medium mb-8">
             Canada Express Entry Statistics
           </p>
@@ -127,10 +127,10 @@ export default function Home() {
               Express Entry pool as of {latestRound.drawDateFull}.
             </li>
           </ol>
-          <ExternalLink href="https://saboorbakshi.com/">
-            by Saboor Bakshi
-          </ExternalLink>
-        </div>
+          {/* <ExternalLink href="https://saboorbakshi.com/">
+            I'm looking for opportunities in Canada!
+          </ExternalLink> */}
+        </section>
 
         <section>
           <ChartHeader
