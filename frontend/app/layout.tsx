@@ -8,12 +8,25 @@ const sohne = localFont({
   display: 'swap',
 })
 
+const title = 'Canada Express Entry Statistics'
+const description =
+  'Track CRS cutoff scores, invitations, and candidate pool data for Express Entry draws.'
+
 export const metadata: Metadata = {
-  title: 'Canada Express Entry Statistics',
-  description:
-    'Track CRS cutoff scores, invitations, and candidate pool data for Express Entry draws.',
+  metadataBase: new URL('https://ee-live.pages.dev'),
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: 'https://ee-live.pages.dev',
+    siteName: title,
+    type: 'website',
+  },
   twitter: {
     card: 'summary_large_image',
+    title,
+    description,
   },
 }
 
