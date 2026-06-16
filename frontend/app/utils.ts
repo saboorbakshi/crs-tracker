@@ -23,7 +23,7 @@ export function getCategoryColor(
   const idx = group
     ? categories.findIndex((c) => group.test(c))
     : categories.indexOf(category)
-  const hue = Math.round((idx / (categories.length - 1)) * 340)
+  const hue = Math.round((idx / (categories.length - 1)) * 330)
   return `hsl(${hue}, 72%, 52%)`
 }
 

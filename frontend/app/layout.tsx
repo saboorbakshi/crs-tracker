@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: 'Canada Express Entry Statistics',
   description:
     'Track CRS cutoff scores, invitations, and candidate pool data for Express Entry draws.',
+  twitter: {
+    card: 'summary_large_image',
+  },
 }
 
 export default function RootLayout({
