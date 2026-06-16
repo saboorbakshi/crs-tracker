@@ -1,16 +1,31 @@
 import {
   Round,
   DrawDataPoint,
-  InvitationDataPoint,
+  StackedInvitationDataPoint,
   PoolDataPoint,
   ApiResponse,
   RawRound,
 } from './types'
-import { POOL_RANGES, POOL_VIEWS } from './constants'
+import { POOL_RANGES, POOL_VIEWS, SHORT_MONTHS } from './constants'
 
 ///////////////////////////////////////////////////////////////////////////
 // GENERAL
 ///////////////////////////////////////////////////////////////////////////
+
+export function getCategoryColor(
+  category: string,
+  categories: string[]
+): string {
+  if (/canadian experience/i.test(category)) return 'var(--primary)'
+
+  const COLOR_GROUPS: RegExp[] = [/french/i, /^trades/i, /health/i]
+  const group = COLOR_GROUPS.find((re) => re.test(category))
+  const idx = group
+    ? categories.findIndex((c) => group.test(c))
+    : categories.indexOf(category)
+  const hue = Math.round((idx / (categories.length - 1)) * 340)
+  return `hsl(${hue}, 72%, 52%)`
+}
 
 export function extractRounds(data: ApiResponse): Round[] {
   return data.payload.rounds
@@ -29,8 +44,17 @@ export function extractRounds(data: ApiResponse): Round[] {
         invitations: r.drawSize,
         score: r.drawCRS,
         category: r.drawName
-          .replace(/Version /gi, 'V')
-          .replace(/ occupations/gi, ''),
+          .replace(/version /gi, 'V')
+          .replace(/trade /gi, 'Trades ')
+          .replace(/ occupations/gi, '')
+          .replace(/work experience/gi, 'Exp')
+          .replace(/French-Language/gi, 'French Language')
+          .replace(/,?\s*(20\d\d)-(V\d+)/gi, ' ($2-$1)')
+          .replace(/\b\w+\b/g, (word) =>
+            ['and', 'with'].includes(word.toLowerCase())
+              ? word.toLowerCase()
+              : word.charAt(0).toUpperCase() + word.slice(1)
+          ),
         distributionDateFull: r.drawDistributionAsOn,
         pool,
         totalCandidates: r.dd18,
@@ -115,39 +139,37 @@ export function calculateDomain(data: DrawDataPoint[]) {
 // INVITATION CHART
 ///////////////////////////////////////////////////////////////////////////
 
-export function formatInvitationData(
+export function formatStackedInvitationData(
   rounds: Round[],
   years: number[]
-): InvitationDataPoint[] {
-  const formattedData: InvitationDataPoint[] = []
+): {
+  data: StackedInvitationDataPoint[]
+  categories: string[]
+  yearTotals: Record<number, number>
+} {
+  const categories = [...new Set(rounds.map((r) => r.category))].sort()
+
+  const data: StackedInvitationDataPoint[] = []
+  const yearTotals: Record<number, number> = {}
 
   for (const year of years) {
-    const monthlyTotals: Record<number, number> = {}
-    for (let i = 0; i < 12; i++) {
-      monthlyTotals[i] = 0
+    const monthly: Record<number, Record<string, number>> = {}
+    for (let i = 0; i < SHORT_MONTHS.length; i++) {
+      monthly[i] = Object.fromEntries(categories.map((c) => [c, 0]))
     }
-
+    let yearTotal = 0
     for (const r of rounds) {
       if (r.drawDate.getFullYear() !== year) continue
-      const monthIndex = r.drawDate.getMonth()
-      const size = r.invitations
-
-      if (monthIndex >= 0 && monthIndex < 12) {
-        monthlyTotals[monthIndex] += size
-      }
+      monthly[r.drawDate.getMonth()][r.category] += r.invitations
+      yearTotal += r.invitations
     }
-
-    Object.keys(monthlyTotals).forEach((key) => {
-      const mIndex = parseInt(key, 10)
-      formattedData.push({
-        year: year,
-        month: mIndex,
-        invitations: monthlyTotals[mIndex],
-      })
-    })
+    yearTotals[year] = yearTotal
+    for (let i = 0; i < SHORT_MONTHS.length; i++) {
+      data.push({ year, month: i, ...monthly[i] })
+    }
   }
 
-  return formattedData
+  return { data, categories, yearTotals }
 }
 
 ///////////////////////////////////////////////////////////////////////////

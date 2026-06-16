@@ -52,7 +52,7 @@ export default function PoolChart({ data }: PoolChartProps) {
     <div>
       <ResponsiveContainer width="100%" aspect={CHART_ASPECT_RATIO}>
         <BarChart
-          barCategoryGap="16%"
+          barCategoryGap="15%"
           data={data}
           margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
         >
@@ -82,10 +82,10 @@ export default function PoolChart({ data }: PoolChartProps) {
             content={<ChartTooltip />}
           />
           <Bar
-            maxBarSize={isDetailed ? 20 : 48}
+            maxBarSize={isDetailed ? 21 : 50}
             dataKey="count"
             fill="var(--primary)"
-            radius={[2, 2, 2, 2]}
+            radius={[2, 2, 0, 0]}
             animationDuration={200}
             animationEasing="ease-out"
           />

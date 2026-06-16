@@ -1,4 +1,4 @@
-export const CHART_ASPECT_RATIO = 1.9
+export const CHART_ASPECT_RATIO = 1.8
 
 export const POOL_RANGES = [
   { key: 'dd1', range: '601-1200' },

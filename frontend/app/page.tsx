@@ -3,14 +3,14 @@
 import { useState, useMemo, useEffect } from 'react'
 import rawData from '../data.json'
 import DrawChart from './components/DrawChart'
-import InvitationChart from './components/InvitationChart'
+import StackedInvitationChart from './components/StackedInvitationChart'
 import PoolChart from './components/PoolChart'
 import Select from './components/Select'
 import ExternalLink from './components/ExternalLink'
 import {
   extractRounds,
   formatDrawData,
-  formatInvitationData,
+  formatStackedInvitationData,
   getPoolDistribution,
   filterByTime,
 } from './utils'
@@ -26,7 +26,11 @@ const years = [
 
 const latestRound = rounds[0]
 const drawData = formatDrawData(rounds)
-const invitationData = formatInvitationData(rounds, years)
+const {
+  data: invitationData,
+  categories: invitationCategories,
+  yearTotals: invitationYearTotals,
+} = formatStackedInvitationData(rounds, years)
 
 const TIME_OPTIONS = [
   { label: 'Periods', options: PERIODS },
@@ -63,7 +67,7 @@ export default function Home() {
     }
   }, [filteredDrawData])
 
-  // invitationChart
+  // stackedInvitationChart
   const yearOptions = years.map(String)
   const [invitationYear, setInvitationYear] = useState(yearOptions[0])
 
@@ -71,8 +75,15 @@ export default function Home() {
     return invitationData.filter((d) => d.year === Number(invitationYear))
   }, [invitationYear])
 
-  const totalInvitations = useMemo(() => {
-    return filteredInvitationData.reduce((sum, d) => sum + d.invitations, 0)
+  const totalInvitations = invitationYearTotals[Number(invitationYear)]
+
+  const activeCategoryTotals = useMemo(() => {
+    const totals: Record<string, number> = {}
+    for (const cat of invitationCategories) {
+      const total = filteredInvitationData.reduce((sum, d) => sum + (d[cat] ?? 0), 0)
+      if (total > 0) totals[cat] = total
+    }
+    return totals
   }, [filteredInvitationData])
 
   // poolChart
@@ -109,7 +120,7 @@ export default function Home() {
               shown chronologically to highlight trends over time.
             </li>
             <li>
-              The number of invitations issued per month, grouped by year.
+              The number of invitations issued each month, broken down into individual categories.
             </li>
             <li>
               The current distribution of candidates by CRS scores in the
@@ -158,9 +169,11 @@ export default function Home() {
               options={yearOptions}
             />
           </div>
-          <InvitationChart
+          <StackedInvitationChart
             data={filteredInvitationData}
             year={Number(invitationYear)}
+            categories={invitationCategories}
+            activeCategoryTotals={activeCategoryTotals}
           />
         </section>
 

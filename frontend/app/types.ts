@@ -66,10 +66,10 @@ export type DrawDataPoint = {
   category: string
 }
 
-export type InvitationDataPoint = {
+export type StackedInvitationDataPoint = {
   year: number
   month: number
-  invitations: number
+  [category: string]: number
 }
 
 export type PoolDataPoint = {
