@@ -2,11 +2,11 @@
 
 :root {
   --background: #ffffff;
-  --background2: #f7f7f7;
-  --foreground: #111111;
-  --foreground2: #787878;
-  --border: #ededed;
-  --border2: #dddddd;
+  --background2: #f4f4f4;
+  --foreground: #0f0f0f;
+  --foreground2: #767676;
+  --border: #e3e3e3;
+  --border2: #d0d0d0;
   --primary: #eb2c37;
   --error: #fc0000;
   --weight-normal: 300;
