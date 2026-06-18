@@ -140,12 +140,15 @@ export default function StackedInvitationChart({
                   .slice(idx + 1)
                   .every((c) => (props[c] ?? 0) === 0)
                 const { x, y, width: w, height: h, fill } = props
-                const r = isTopmost ? Math.min(2, w / 2, h) : 0
-                const d = `M${x},${y + h} L${x},${y + r} Q${x},${y} ${
+                const adjY = y + 1
+                const adjH = h - 1
+                if (adjH <= 0) return <g />
+                const r = isTopmost ? Math.min(2, w / 2, adjH) : 0
+                const d = `M${x},${adjY + adjH} L${x},${adjY + r} Q${x},${adjY} ${
                   x + r
-                },${y} L${x + w - r},${y} Q${x + w},${y} ${x + w},${
-                  y + r
-                } L${x + w},${y + h} Z`
+                },${adjY} L${x + w - r},${adjY} Q${x + w},${adjY} ${x + w},${
+                  adjY + r
+                } L${x + w},${adjY + adjH} Z`
                 return <path d={d} fill={fill} />
               }}
             />
