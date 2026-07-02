@@ -15,7 +15,7 @@ import {
   filterByTime,
 } from './utils'
 import { ApiResponseSchema, DrawDataPoint } from './types'
-import { PERIODS, POOL_VIEWS, CHART_ASPECT_RATIO } from './constants'
+import { PERIODS, POOL_VIEWS, LINE_CHART_ASPECT_RATIO } from './constants'
 import ChartHeader from './components/ChartHeader'
 
 const data = ApiResponseSchema.parse(rawData)
@@ -37,12 +37,18 @@ const TIME_OPTIONS = [
   { label: 'Years', options: years.map(String) },
 ]
 
-const ChartPlaceholder = () => (
+const ChartPlaceholder = ({
+  aspectRatio,
+  message
+}: {
+  aspectRatio: number
+  message: string
+}) => (
   <div
-    style={{ aspectRatio: CHART_ASPECT_RATIO }}
+    style={{ aspectRatio }}
     className="w-full flex items-center justify-center text-foreground2 text-sm sm:text-base border border-border rounded-md"
   >
-    <p>No draws available for the selected filters.</p>
+    <p>{message}</p>
   </div>
 )
 
@@ -156,7 +162,10 @@ export default function Home() {
               onActiveChange={setActiveDrawPoint}
             />
           ) : (
-            <ChartPlaceholder />
+            <ChartPlaceholder
+              aspectRatio={LINE_CHART_ASPECT_RATIO}
+              message="No draws available for the selected filters."
+            />
           )}
         </section>
 

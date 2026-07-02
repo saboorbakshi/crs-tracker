@@ -11,7 +11,7 @@ import {
 } from 'recharts'
 import { PoolDataPoint } from '../types'
 import ChartTooltipComponent from './ChartTooltip'
-import { CHART_ASPECT_RATIO, POOL_VIEWS } from '../constants'
+import { BAR_CHART_ASPECT_RATIO, POOL_VIEWS } from '../constants'
 
 interface PoolChartProps {
   data: PoolDataPoint[]
@@ -50,7 +50,7 @@ export default function PoolChart({ data }: PoolChartProps) {
   const isDetailed = data.length > POOL_VIEWS.Compact.length
   return (
     <div>
-      <ResponsiveContainer width="100%" aspect={CHART_ASPECT_RATIO}>
+      <ResponsiveContainer width="100%" aspect={BAR_CHART_ASPECT_RATIO}>
         <BarChart
           barCategoryGap="15%"
           data={data}

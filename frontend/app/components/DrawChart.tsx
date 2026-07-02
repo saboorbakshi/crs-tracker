@@ -12,7 +12,7 @@ import {
 import { DrawDataPoint } from '../types'
 import ChartTooltipComponent from './ChartTooltip'
 import { calculateDomain } from '../utils'
-import { CHART_ASPECT_RATIO } from '../constants'
+import { LINE_CHART_ASPECT_RATIO } from '../constants'
 
 interface DrawChartProps {
   data: DrawDataPoint[]
@@ -81,7 +81,7 @@ export default function DrawChart({
   }, [fallback, onActiveChange])
 
   return (
-    <ResponsiveContainer width="100%" aspect={CHART_ASPECT_RATIO}>
+    <ResponsiveContainer width="100%" aspect={LINE_CHART_ASPECT_RATIO}>
       <LineChart data={data} margin={{ top: 0, right: 0, bottom: 0, left: 4 }}>
         <YAxis
           orientation="right"

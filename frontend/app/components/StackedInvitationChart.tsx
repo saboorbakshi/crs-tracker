@@ -13,7 +13,7 @@ import {
 import {
   SHORT_MONTHS,
   FULL_MONTHS,
-  CHART_ASPECT_RATIO,
+  BAR_CHART_ASPECT_RATIO,
 } from '../constants'
 import { StackedInvitationDataPoint } from '../types'
 import { getCategoryColor } from '../utils'
@@ -94,7 +94,7 @@ export default function StackedInvitationChart({
 }: StackedInvitationChartProps) {
   return (
     <div className="flex flex-col gap-3">
-      <ResponsiveContainer width="100%" aspect={CHART_ASPECT_RATIO}>
+      <ResponsiveContainer width="100%" aspect={BAR_CHART_ASPECT_RATIO}>
         <BarChart
           barCategoryGap="15%"
           data={data}
