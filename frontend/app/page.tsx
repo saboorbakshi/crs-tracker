@@ -104,8 +104,8 @@ export default function Home() {
     <div className="flex min-h-screen items-center justify-center font-sans">
       <main className="flex min-h-screen w-full max-w-xl flex-col py-8 sm:py-14 px-5 gap-14 sm:gap-16">
         <section className="-mb-7 sm:-mb-8">
-          <p className="text-4xl sm:text-5xl font-medium mb-8">
-            Canada Express Entry Statistics
+          <p className="text-4xl sm:text-5xl mb-7 sm:mb-8 font-[440] tracking-[-0.02em] leading-[42px] sm:leading-14">
+            CRS Tracker for <br/> Express Entry
           </p>
           <p className="mb-6">
             All Express Entry draws since 2020 are tracked and automatically

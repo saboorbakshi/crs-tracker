@@ -10,7 +10,7 @@ const sohne = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ee-live.pages.dev'),
-  title: 'Canada Express Entry Statistics',
+  title: 'CRS Tracker',
   description:
     'Track CRS cutoff scores, invitations, and candidate pool data for Express Entry draws.',
   twitter: {
