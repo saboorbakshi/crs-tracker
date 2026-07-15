@@ -16,19 +16,21 @@ interface SelectProps {
   className?: string
 }
 
-function ChevronDownIcon(props: React.ComponentProps<'svg'>) {
+function CaretDownIcon(props: React.ComponentProps<'svg'>) {
   return (
     <svg
       aria-hidden="true"
-      width="20"
-      height="20"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="-mx-1.5"
       {...props}
     >
-      <path d="M7 10L12 16.6667L17 10H7Z" fill="currentColor"></path>
+      <path
+        d="M16.9999 9C17.3878 9.00005 17.7406 9.22483 17.9051 9.57617C18.0696 9.92749 18.0167 10.3426 17.7684 10.6406L12.7684 16.6406C12.5785 16.8685 12.2966 17 11.9999 17C11.7032 17 11.4213 16.8685 11.2313 16.6406L6.23131 10.6406C5.98294 10.3426 5.9301 9.92753 6.09459 9.57617C6.25918 9.22482 6.61187 9 6.99987 9H16.9999Z"
+        fill="currentColor"
+      />
     </svg>
   )
 }
@@ -37,12 +39,12 @@ function SelectItem({ value }: { value: string }) {
   return (
     <BaseSelect.Item
       value={value}
-      className="grid cursor-default select-none grid-cols-[0.75rem_1fr] items-center gap-1 px-3 py-1.5 text-sm outline-none data-highlighted:bg-background2 rounded-sm"
+      className="grid cursor-default select-none grid-cols-[1fr_0.75rem] items-center gap-1 px-3 py-1.5 text-sm outline-none data-highlighted:bg-background2 rounded-sm"
     >
-      <BaseSelect.ItemIndicator className="col-start-1">
+      <BaseSelect.ItemText className="col-start-1">{value}</BaseSelect.ItemText>
+      <BaseSelect.ItemIndicator className="col-start-2 justify-self-end">
         •
       </BaseSelect.ItemIndicator>
-      <BaseSelect.ItemText className="col-start-2">{value}</BaseSelect.ItemText>
     </BaseSelect.Item>
   )
 }
@@ -60,13 +62,14 @@ export default function Select({
       >
         <BaseSelect.Value />
         <BaseSelect.Icon>
-          <ChevronDownIcon />
+          <CaretDownIcon className='-mr-1 text-foreground2/80' />
         </BaseSelect.Icon>
       </BaseSelect.Trigger>
       <BaseSelect.Portal>
         <BaseSelect.Positioner
           className="z-50 outline-none"
           alignItemWithTrigger={false}
+          align="start"
           side="bottom"
           sideOffset={4}
         >
@@ -78,7 +81,7 @@ export default function Select({
                 }
                 return (
                   <BaseSelect.Group key={option.label}>
-                    <BaseSelect.GroupLabel className="px-5 py-1.5 text-[10px] uppercase font-semibold text-foreground2/80 tracking-wider text-center">
+                    <BaseSelect.GroupLabel className="px-3 py-1.5 text-[10px] uppercase font-semibold text-foreground2/80 tracking-wider text-left">
                       {option.label}
                     </BaseSelect.GroupLabel>
                     {option.options.map((subOption) => (
