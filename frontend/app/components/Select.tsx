@@ -39,7 +39,7 @@ function SelectItem({ value }: { value: string }) {
   return (
     <BaseSelect.Item
       value={value}
-      className="grid cursor-default select-none grid-cols-[1fr_0.75rem] items-center gap-1 px-3 py-1.5 text-sm outline-none data-highlighted:bg-background2 rounded-sm"
+      className="grid cursor-default select-none grid-cols-[1fr_1rem] items-center gap-1 px-2 py-1.5 text-sm outline-none data-highlighted:bg-background2 rounded-sm"
     >
       <BaseSelect.ItemText className="col-start-1">{value}</BaseSelect.ItemText>
       <BaseSelect.ItemIndicator className="col-start-2 justify-self-end">
@@ -58,11 +58,11 @@ export default function Select({
   return (
     <BaseSelect.Root value={value} onValueChange={(v) => v && onValueChange(v)}>
       <BaseSelect.Trigger
-        className={`inline-flex w-fit items-center gap-2 rounded-md border border-border px-3 py-1.5 text-sm text-foreground2 outline-none hover:border-border2 focus-visible:ring-2 focus-visible:ring-border2 ${className ?? ''}`}
+        className={`inline-flex w-fit items-center gap-1 rounded-md border border-border px-3 py-1.5 text-sm text-foreground2 outline-none hover:border-border2 focus-visible:ring-2 focus-visible:ring-border2 ${className ?? ''}`}
       >
         <BaseSelect.Value />
         <BaseSelect.Icon>
-          <CaretDownIcon className='-mr-1 text-foreground2/80' />
+          <CaretDownIcon className='text-foreground2/80 ml-1 -mr-1' />
         </BaseSelect.Icon>
       </BaseSelect.Trigger>
       <BaseSelect.Portal>
@@ -81,7 +81,7 @@ export default function Select({
                 }
                 return (
                   <BaseSelect.Group key={option.label}>
-                    <BaseSelect.GroupLabel className="px-3 py-1.5 text-[10px] uppercase font-semibold text-foreground2/80 tracking-wider text-left">
+                    <BaseSelect.GroupLabel className="px-2 py-1.5 text-[10px] uppercase font-semibold text-foreground2/80 tracking-wider text-left">
                       {option.label}
                     </BaseSelect.GroupLabel>
                     {option.options.map((subOption) => (
