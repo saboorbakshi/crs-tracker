@@ -94,6 +94,9 @@ export default function StackedInvitationChart({
 }: StackedInvitationChartProps) {
   return (
     <div className="flex flex-col gap-3">
+      <p className="text-sm text-foreground2">
+        Values below 100 are too small to show in the bars.
+      </p>
       <ResponsiveContainer width="100%" aspect={BAR_CHART_ASPECT_RATIO}>
         <BarChart
           barCategoryGap="15%"
@@ -136,9 +139,12 @@ export default function StackedInvitationChart({
               animationDuration={200}
               animationEasing="ease-out"
               shape={(props: any) => {
+                const value = props[cat] ?? 0
+                if (value < 100) return <g />
+
                 const isTopmost = categories
                   .slice(idx + 1)
-                  .every((c) => (props[c] ?? 0) === 0)
+                  .every((c) => (props[c] ?? 0) < 100)
                 const { x, y, width: w, height: h, fill } = props
                 const adjY = y + 1
                 const adjH = h - 1
